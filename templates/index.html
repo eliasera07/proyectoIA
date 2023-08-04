@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div id="chat-container">
+        <div id="chat-output"></div>
+        <input type="text" id="user-input" placeholder="Escribe tu mensaje..." />
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+
+    <script>
+        const chatOutput = document.getElementById('chat-output');
+        const userInput = document.getElementById('user-input');
+
+        function addChatMessage(message, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = `${sender}: ${message}`;
+            chatOutput.appendChild(messageDiv);
+        }
+
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message !== '') {
+                addChatMessage(message, 'Usuario');
+                userInput.value = '';
+
+                fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ input: message })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const responseMessage = data.response;
+                    addChatMessage(responseMessage, 'Chatbot');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
