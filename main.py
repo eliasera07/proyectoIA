@@ -1,7 +1,21 @@
 import openai
 import os
+from flask import Flask, request, jsonify, render_template
 
-openai.api_key = ''
+app = Flask(__name__)
+
+openai.api_key = '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'
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    data = request.json
+    user_input = data['input']
+    response = get_chat_response(user_input)
+    return jsonify({'response': response})
 
 
 def get_api_response(prompt: str) -> str | None:
@@ -52,18 +66,12 @@ def get_bot_response(message: str, pl: list[str]) -> str:
 
     return bot_response
 
-
-def main():
-    prompt_list: list[str] = ['You are a potato and will answer as a potato',
-                              '\nHuman: What time is it?',
-                              '\nAI: I have no idea, I\'m a potato!']
-
-    while True:
-        user_input: str = input('You: ')
-        response: str = get_bot_response(user_input, prompt_list)
-        print(f'Bot: {response}')
-
+def get_chat_response(user_input):
+    prompt_list: list[str] = ['Tu eres un experto nutricionista',
+                              '\nHuman: te centraras en la alimentación',
+                              '\nAI: Yo soy un nutricionista experto que te ayudare con tus preguntas']
+    response: str = get_bot_response(user_input, prompt_list)
+    return f"Respuesta a: {response}"
 
 if __name__ == '__main__':
-
-    main()
+    app.run(debug=True)
