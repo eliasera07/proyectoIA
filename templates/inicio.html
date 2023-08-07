@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='inicio.css') }}">
+</head>
+<body>
+    <div class="container">
+        <form class="login-form" action="/datos" method="post">
+            <h1>Inicio</h1>
+            <label>Peso: </label>
+            <input type="number" step="0.01" name="peso" placeholder="Introduce tu peso en kg" required>
+            
+            <label>Altura: </label>
+            <input type="number" step="0.01" name="altura" placeholder="Introduce tu altura en cm" required>
+           
+            <label>Edad: </label>
+            <input type="number" name="edad" placeholder="Introduce tu edad" required>
+            
+            <button type="submit" onclick="enviarDatos()">Ingresar tus datos</button>
+        </form>
+    </div>
+</body>
+</html>
