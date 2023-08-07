@@ -1,29 +1,82 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Inicio</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Estilo para el contenedor de mensajes */
+        .box {
+            height: 300px; /* Altura máxima del contenedor de mensajes */
+            overflow-y: auto; /* Agrega una barra de desplazamiento vertical si los mensajes exceden la altura */
+        }
+    </style>
+    <title>Chatbot - NutriAI solutions</title>
+</head>
 <body>
-    <h1 >Chatbot </h1>
-    <div id="chat-container" >
-        <div id="chat-output"></div>
-        <input type="text" id="user-input" placeholder="Escribe tu mensaje..." onkeypress="handleKeyPress(event)"/>
-        <button onclick="sendMessage()">Enviar</button>
+    <div class="wrapper">
+        <div class="title">NutriAI solutions</div>
+        <div class="box" id="chat-output">
+            <div class="item">
+                <div class="icon">
+                    <img src="../static/iconoPequeniooo.svg" alt="iconoPequeniooo">
+                </div>
+                <div class="msg">
+                    <p>Bienvenido, ¿ya tomaste agüita?</p>
+                </div>
+            </div>
+        </div>
+        <div class="typing-area">
+            <div class="input-field">
+                <input type="text" placeholder="Type your message" required onkeydown="handleKeyPress(event)">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
     </div>
     <script>
-        function handleKeyPress(event){
-            if (event.keyCode === 13) { // 13 es el código de tecla "Enter"
+        function handleKeyPress(event) {
+            if (event.keyCode === 13) {
                 sendMessage();
             }
-            }
+        }
+
         const chatOutput = document.getElementById('chat-output');
-        const userInput = document.getElementById('user-input');
+        const userInput = document.querySelector('.typing-area input');
 
         function addChatMessage(message, sender) {
             const messageDiv = document.createElement('div');
-            messageDiv.textContent = `${sender}: ${message}`;
+            messageDiv.classList.add('item');
+
+            if (sender === 'Usuario') {
+                messageDiv.classList.add('right');
+            }
+
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('msg');
+
+            const messageText = document.createElement('p');
+            messageText.textContent = message;
+
+            messageContent.appendChild(messageText);
+
+            if (sender === 'Usuario') {
+                messageDiv.appendChild(messageContent);
+            } else {
+                const iconDiv = document.createElement('div');
+                iconDiv.classList.add('icon');
+                const iconImage = document.createElement('img');
+                iconImage.src = '../static/iconoPequeniooo.svg';
+                iconImage.alt = 'iconoPequeniooo';
+                iconDiv.appendChild(iconImage);
+                messageDiv.appendChild(iconDiv);
+                messageDiv.appendChild(messageContent);
+            }
+
             chatOutput.appendChild(messageDiv);
+
+            // Scroll hasta el último mensaje
+            chatOutput.scrollTop = chatOutput.scrollHeight;
         }
 
         function sendMessage() {

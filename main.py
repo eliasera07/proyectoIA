@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, render_template, redirect, url_for
 
 app = Flask(__name__)
 
-openai.api_key = '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'
+openai.api_key = ''
 
 pesoT= 0
 alturaT = 0
