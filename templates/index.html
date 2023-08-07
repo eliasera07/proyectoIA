@@ -1,5 +1,16 @@
 <!DOCTYPE html>
-
+<html>
+    <head>
+        <title>Inicio</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    </head>
+<body>
+    <h1 >Chatbot </h1>
+    <div id="chat-container" >
+        <div id="chat-output"></div>
+        <input type="text" id="user-input" placeholder="Escribe tu mensaje..." onkeypress="handleKeyPress(event)"/>
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
     <script>
         function handleKeyPress(event){
             if (event.keyCode === 13) { // 13 es el código de tecla "Enter"
