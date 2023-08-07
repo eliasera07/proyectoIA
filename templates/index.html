@@ -6,11 +6,20 @@
 <body>
     <h1>Chatbot</h1>
     <div>
-        Peso:<input placeholder="Introduce tu peso en kg" />
-        Altura:<input placeholder="Introduce tu altura en cm " />
-        Edad:<input placeholder="Introduce tu edad" />
-        
-        <button>Ingresar tus datos</button>
+        <form action="/datos" method="post">
+            <div>
+                Peso: <input type="number" step="0.01" name="peso" placeholder="Introduce tu peso en kg" required>
+            </div>
+            <div>
+                Altura: <input type="number" step="0.01" name="altura" placeholder="Introduce tu altura en cm" required>
+            </div>
+            <div>
+                Edad: <input type="number" name="edad" placeholder="Introduce tu edad" required>
+            </div>
+            <div>
+                <button type="submit">Ingresar tus datos</button>
+            </div>
+        </form>
     </div>
 
     <div id="chat-container">

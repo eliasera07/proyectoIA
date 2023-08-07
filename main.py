@@ -17,6 +17,19 @@ def chat():
     response = get_chat_response(user_input)
     return jsonify({'response': response})
 
+@app.route('/datos', methods=['POST'])
+def procesar_datos():
+    peso = float(request.form['peso'])
+    altura = float(request.form['altura'])
+    edad = int(request.form['edad'])
+
+    # Realizar cálculos o acciones con los datos recibidos del formulario
+    # Por ejemplo, puedes calcular el índice de masa corporal (IMC):
+    imc = peso / ((altura / 100) ** 2)
+
+    # Puedes realizar cualquier otra operación o acción con los datos recibidos
+
+    return f'Tus datos: Peso: {peso} kg, Altura: {altura} cm, Edad: {edad} años. Tu IMC es: {imc:.2f}'
 
 def get_api_response(prompt: str) -> str | None:
     text: str | None = None
