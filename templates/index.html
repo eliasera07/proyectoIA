@@ -85,12 +85,12 @@
                 addChatMessage(message, 'Usuario');
                 userInput.value = '';
 
-                fetch('/chat', {
+                fetch('/get_response', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ input: message })
+                    body: JSON.stringify({ message: message })
                 })
                 .then(response => response.json())
                 .then(data => {
