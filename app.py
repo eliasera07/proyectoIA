@@ -59,7 +59,7 @@ def get_response():
     )
 
     assistant_message = response["choices"][0]["message"]["content"]
-    #print(assistant_message)
+    print(assistant_message)
     return jsonify({"response": assistant_message})
 
 if __name__ == "__main__":
