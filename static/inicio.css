@@ -1,20 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 body {
     font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
+    background-color: #E5FFD0;
     margin: 0;
     padding: 0;
+}
+header {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    width: 100%;
+    height: 300px;
+    background: #a8ff78;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #78ffd6, #a8ff78);
+    background: linear-gradient(to right, #78ffd79f, #a8ff78), url(../static/iconoPequeniooo.svg); 
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+}
+.wrapper .box .item .icon {
+    background: #FFFBDA ;
+    color: white;
+    width: 400px;
+    height: 400px;
+    text-align: center;
+    line-height: 84.5px;
+    border-radius: 50%;
+}
+header .textos-header{
+    display: flex;
+    height: 200px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+
+}
+
+.titulo{
+    margin-bottom: 20px;
+}
+.contenedor-nosotros{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.contenedor-nosotros .contenido-textos{
+    width: 48%;
+}
+.contenido-textos h2{
+    margin-bottom: 15px;
+}
+.contenido-textos h3 span{
+    background: #a8ff78;
+    color: #ffff;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    width: 30px;
+    padding: 2px;
+    margin-right: 5px;
+    
+}
+.contenido-textos p{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    padding: 0px 0px 3px 15px;
+    font-weight: 300;
+    text-align: justify;
 }
 
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 110vh;
 }
 
 .login-form {
     background-color: #ffffff;
-    padding: 20px;
+    padding: 30px;
     border-radius: 5px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     width: 300px;
@@ -29,7 +94,13 @@ label {
     display: block;
     margin-bottom: 10px;
 }
-
+input[type="letter"]{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
 input[type="number"]{
     width: 100%;
     padding: 10px;
