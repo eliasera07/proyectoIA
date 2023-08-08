@@ -19,29 +19,19 @@
        
     </header>
     <link rel="shortcut icon" href="../static/iconoPequeniooo.svg" type="image/x-icon">
-    <section class="contenedor-nosotros">
-        <h2 class="titulo" >Nosotros somos
-        </h2>
-        
-        <div class="contenido-textos">
-            <h3><span>1</span>Nos preocupamos por tu salud y bienestar</h3>
-            <p>somos una empresa que se interesa en ti y en las personas que quieres,te mostramos dietas al alcance del bolsillo
-                y buscamos satisfacer tus preferencias con unas rutinas de ejercicios personalizadas.
-                porque cuidar tu salud es nuestro primordial objetivo...
-            </p>
-        </div>
-    </section>
     <div class="container">
 
         <form class="login-form" action="/datos" method="post">
             <img src="../static/iconoPequeniooo.svg" alt="iconoPequeniooo">  
             <h1>Mucho gusto:</h1>
+            <h1>¡Comencemos!</h1>
             <label>Nombre: </label>
-            <input type="letter" name="nombre" placeholder="Introduce su nombre" required>
-
-            <h1>Datos importantes</h1>
-            <label>Genero: </label>
-            <input type="letter" name="genero" placeholder="Introduce su genero" required>
+            <input type="letter" name="nombre" placeholder="Introduce tu nombre" required>
+            <label for="genero">Género:</label>
+            <select id="genero" name="genero" required>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+            </select>
 
             <label>Peso: </label>
             <input type="number" step="0.01" name="peso" placeholder="Introduce tu peso en kg" required>
@@ -52,8 +42,15 @@
             <label>Edad: </label>
             <input type="number" name="edad" placeholder="Introduce tu edad" required>
             
-            <button type="submit" onclick="enviarDatos()">Ingresar tus datos</button>
+            <button type="submit" onclick="enviarDatos()">Comenzar</button>
         </form>
+    </div>
+    <div class="contenido-textos">
+        <h3><span>1</span>Nos preocupamos por tu salud y bienestar</h3>
+        <label>Somos una empresa que se interesa en ti y en las personas que quieres,te mostramos dietas al alcance del bolsillo
+            y buscamos satisfacer tus preferencias con unas rutinas de ejercicios personalizadas.
+            porque cuidar tu salud es nuestro primordial objetivo...
+        </label>
     </div>
 </body>
 </html>

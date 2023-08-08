@@ -67,8 +67,26 @@ header .textos-header{
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     padding: 0px 0px 3px 15px;
     font-weight: 300;
-    text-align: justify;
+    text-align: center;
 }
+
+.contenido-textos {
+    padding-left: 500px;
+    padding-right: 500px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    
+  }
+  
+  .contenido-textos h3 {
+    margin-bottom: 10px;
+  }
+  
+  .contenido-textos label {
+    font-size: 16px;
+  }
+  
 
 .container {
     display: flex;
@@ -101,6 +119,19 @@ input[type="letter"]{
     border: 1px solid #ccc;
     border-radius: 3px;
 }
+
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  option {
+    padding: 10px;
+  }
+
 input[type="number"]{
     width: 100%;
     padding: 10px;

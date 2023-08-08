@@ -56,7 +56,13 @@
             messageContent.classList.add('msg');
 
             const messageText = document.createElement('p');
-            messageText.textContent = message;
+            const lines = message.split('\n');
+            lines.forEach(line => {
+                const lineElement = document.createElement('span');
+                lineElement.textContent = line;
+                messageText.appendChild(lineElement);
+                messageText.appendChild(document.createElement('br'));
+            });
 
             messageContent.appendChild(messageText);
 
@@ -78,6 +84,7 @@
             // Scroll hasta el último mensaje
             chatOutput.scrollTop = chatOutput.scrollHeight;
         }
+
 
         function sendMessage() {
             const message = userInput.value.trim();
