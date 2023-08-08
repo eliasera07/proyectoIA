@@ -10,6 +10,8 @@ openai.api_key = "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"
 pesoT= 0
 alturaT = 0
 edadT = 0
+generoT = ""
+nombreT = ""
 
 @app.route('/')
 def inicio():
@@ -32,7 +34,7 @@ def datos():
 
 @app.route("/get_response", methods=["POST"])
 def get_response():
-    global pesoT, alturaT, edadT
+    global pesoT, alturaT, edadT, generoT,nombreT
     data = request.get_json()
     user_message = data["message"]
 
@@ -41,7 +43,7 @@ def get_response():
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
-                  {"role": "system", "content": f'Tu eres un experto nutricionista, que guardaras estos datos para dar respuestas precisas a las preguntas, estos datos son: mi peso : {pesoT}, mi altura: {alturaT}  , mi edad: {edadT} '},
+                  {"role": "system", "content": f'Tu eres un experto nutricionista, que guardaras estos datos para dar respuestas precisas a las preguntas, estos datos son: Mi nombre es: {nombreT}mi peso : {pesoT}, mi altura: {alturaT}  , mi edad: {edadT}, mi género: {generoT} '},
                   {"role": "user", "content": prompt}],
     )
     assistant_message = response["choices"][0]["message"]["content"]
