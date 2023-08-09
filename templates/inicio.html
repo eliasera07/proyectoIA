@@ -20,31 +20,36 @@
     </header>
     <link rel="shortcut icon" href="../static/iconoPequeniooo.svg" type="image/x-icon">
     <div class="container">
-
         <form class="login-form" action="/datos" method="post">
             <img src="../static/iconoPequeniooo.svg" alt="iconoPequeniooo">  
             <h1>Mucho gusto:</h1>
             <h1>¡Comencemos!</h1>
+            <label for="correo">Correo: </label>
+            <input type="email" name="correo" id="correoInput" placeholder="Introduce tu correo" required {% if datos %}value="{{ datos[0] }}" {% endif %}>
+
             <label>Nombre: </label>
-            <input type="letter" name="nombre" placeholder="Introduce tu nombre" required>
+            <input type="text" name="nombre" placeholder="Introduce tu nombre" required {% if datos %}value="{{ datos[1] }}" {% endif %}>
+
             <label for="genero">Género:</label>
             <select id="genero" name="genero" required>
-            <option value="masculino">Masculino</option>
-            <option value="femenino">Femenino</option>
+                <option value="masculino" {% if datos and datos[5] == "Masculino" %}selected{% endif %}>Masculino</option>
+                <option value="femenino" {% if datos and datos[5] == "Femenino" %}selected{% endif %}>Femenino</option>
             </select>
 
             <label>Peso: </label>
-            <input type="number" step="0.01" name="peso" placeholder="Introduce tu peso en kg" required>
-            
+            <input type="number" name="peso" step="0.01" name="peso" placeholder="Introduce tu peso en kg" required {% if datos %}value="{{ datos[4] }}" {% endif %}>
+                    
             <label>Altura: </label>
-            <input type="number" step="0.01" name="altura" placeholder="Introduce tu altura en cm" required>
-           
+            <input type="number" name="altura"step="0.01" name="altura" placeholder="Introduce tu altura en cm" required {% if datos %}value="{{ datos[3] }}" {% endif %}>
+                
             <label>Edad: </label>
-            <input type="number" name="edad" placeholder="Introduce tu edad" required>
-            
-            <button type="submit" onclick="enviarDatos()">Comenzar</button>
+            <input type="number" name="edad" placeholder="Introduce tu edad" required {% if datos %}value="{{ datos[2] }}" {% endif %}>
+                    
+            <button type="submit" id="actualizarDatos"onclick="enviarDatos()">Comenzar</button>
+
         </form>
     </div>
+
     <div class="contenido-textos">
         <h3><span>1</span>Nos preocupamos por tu salud y bienestar</h3>
         <label>Somos una empresa que se interesa en ti y en las personas que quieres,te mostramos dietas al alcance del bolsillo
@@ -52,5 +57,77 @@
             porque cuidar tu salud es nuestro primordial objetivo...
         </label>
     </div>
+
+    <script>
+        const correoInput = document.getElementById('correoInput');
+        correoInput.addEventListener('input', async function() {
+            const correo = correoInput.value;
+            if (correo) {
+                try {
+                    const response = await fetch(`/obtener_datos?correo=${correo}`);
+                    const data = await response.json();
+                    if (data) {
+                        document.querySelector('input[name="nombre"]').value = data[1];
+                        document.querySelector('select[name="genero"]').value = data[5];
+                        document.querySelector('input[name="peso"]').value = data[4];
+                        document.querySelector('input[name="altura"]').value = data[3];
+                        document.querySelector('input[name="edad"]').value = data[2];
+                    } else {
+                        limpiarCampos();
+                    }
+                } catch (error) {
+                    console.error('Error al obtener los datos del servidor:', error);
+                }
+            } else {
+                limpiarCampos();
+            }
+        });
+    
+        function limpiarCampos() {
+            document.querySelector('input[name="nombre"]').value = '';
+            document.querySelector('select[name="genero"]').value = '';
+            document.querySelector('input[name="peso"]').value = '';
+            document.querySelector('input[name="altura"]').value = '';
+            document.querySelector('input[name="edad"]').value = '';
+        }
+
+        const actualizarDatosButton = document.getElementById('actualizarDatos');
+    actualizarDatosButton.addEventListener('click', async function() {
+        const correo = correoInput.value;
+        const nombre = document.querySelector('input[name="nombre"]').value;
+        const genero = document.querySelector('select[name="genero"]').value;
+        const peso = document.querySelector('input[name="peso"]').value;
+        const altura = document.querySelector('input[name="altura"]').value;
+        const edad = document.querySelector('input[name="edad"]').value;
+
+        if (correo && nombre && genero && peso && altura && edad) {
+            try {
+                const response = await fetch('/actualizar_datos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        correo: correo,
+                        nombre: nombre,
+                        genero: genero,
+                        peso: peso,
+                        altura: altura,
+                        edad: edad
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    // Datos actualizados exitosamente
+                } else {
+                    // Error al actualizar los datos
+                }
+            } catch (error) {
+                console.error('Error al actualizar los datos en el servidor:', error);
+            }
+        }
+    });
+    </script>
+    
 </body>
 </html>
