@@ -62,6 +62,9 @@ def get_response():
     user_message = data["message"]
     prompt = f"You: {user_message}\nAssistant: "
     print("----------------------------------",pesoT, alturaT, edadT, generoT,nombreT,correoT,"----------------------------------2")
+    
+    #   print(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6])
+
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         temperature=0.4,
@@ -265,6 +268,48 @@ def verificar_correo_existente(correo):
 
     return result is not None  # Devuelve True si result no es None, es decir, si se encontró el correo
 
+def obtener_datos_bd(correo):
+    conn = psycopg2.connect(
+        database="chatgpt_db",
+        user="postgres",
+        password="1010",
+        host="localhost",
+        port="5432"
+    )
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute('SELECT * FROM usuarios WHERE correo = %s', (correo,))
+        datos = cursor.fetchone()
+        return datos
+    except Exception as e:
+        print('Error al obtener los datos de la base de datos:', e)
+        return None
+    finally:
+        cursor.close()
+        conn.close()
+
+def obtener_textos(correo):
+    conn = psycopg2.connect(
+        database="chatgpt_db",
+        user="postgres",
+        password="1010",
+        host="localhost",
+        port="5432"
+    )
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute('SELECT * FROM chats WHERE correo = %s', (correo,))
+        datos = cursor.fetchone()
+        return datos
+
+    except Exception as e:
+        print('Error al obtener los datos de la base de datos:', e)
+        return None
+    finally:
+        cursor.close()
+        conn.close()
 
 if __name__ == "__main__":
     app.run(debug=True)
