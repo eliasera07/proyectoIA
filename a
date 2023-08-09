@@ -31,16 +31,7 @@ def datos():
     generoT = str(request.form['genero'])
     nombreT = str(request.form['nombre'])
     correoT = str(request.form['correo'])
-    # Resto de tu código ...
-
-    if not verificar_correo_existente(correoT):
-        # Si el correo no existe en la base de datos, insertar datos
-        insertar_datos(correoT, nombreT, pesoT, alturaT, edadT, generoT)
-    else:
-        # El correo ya existe en la base de datos
-        print("El correo ya existe en la base de datos.")
-    print("----------------------------------",pesoT, alturaT, edadT, generoT,nombreT,correoT,"----------------------------------1")
-    return redirect(url_for('chat'))
+    return(url_for("chat"))
 
 
 @app.route('/obtener_datos', methods=['GET'])
@@ -240,32 +231,11 @@ def actualizar_datos_bd(correo, nombre, peso, altura, edad, genero):
         cursor.close()
         conn.close()
 
-def verificar_correo_existente(correo):
-
-    conn = psycopg2.connect(
-        database="chatgpt_db",
-        user="postgres",
-        password="1010",
-        host="localhost",
-        port="5432"
-    )
-
-    cursor = conn.cursor()
-    cursor.execute('''
-        SELECT correo
-        FROM usuarios
-        WHERE correo = %s
-    ''', (correo,))
-    
-    result = cursor.fetchone()
-
-    # Cerrar conexión
-    cursor.close()
-    conn.close()
-
-    return result is not None  # Devuelve True si result no es None, es decir, si se encontró el correo
-
 
 if __name__ == "__main__":
     app.run(debug=True)
 
+
+insertar_datos(correoT, nombreT, pesoT, alturaT, edadT, generoT)
+    print("----------------------------------",pesoT, alturaT, edadT, generoT,nombreT,correoT,"----------------------------------1")
+    return redirect(url_for('chat'))
