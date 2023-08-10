@@ -43,6 +43,9 @@ def datos():
     print("----------------------------------",pesoT, alturaT, edadT, generoT,nombreT,correoT,"----------------------------------1")
     return redirect(url_for('chat'))
 
+@app.route('/pagina_anterior')
+def pagina_anterior():
+    return render_template('inicio.html')
 
 @app.route('/obtener_datos', methods=['GET'])
 def obtener_datos_ajax():
@@ -67,14 +70,14 @@ def get_response():
     
     print(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],"----------------------------------------------------------------2")
 
-    if "Enviame a mi correo" in user_message:
+    if "Enviar al correo" in user_message:
         destinatario = datos[0]
         asunto = "NUTRI AI"
         mensajes = obtener_textos(datos[0])
         ultimo_mensaje = mensajes[-1][0] if mensajes else None
 
         enviar_correo(destinatario, asunto, ultimo_mensaje)
-        
+
         return jsonify({"response": "El correo electronico fue enviado correctamente, ¡Le puedo ayudar en algo más?"})
 
     else:
@@ -92,7 +95,7 @@ def get_response():
     },
     {
         "role": "user",
-        "content": prompt
+        "content": f"Hola, con mis datos proporcionados respondeme esta pregunta, {prompt}"
     }
     ]
     )
