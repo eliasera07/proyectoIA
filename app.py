@@ -2,6 +2,7 @@ import openai
 import os
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 import psycopg2
+from correo import enviar_correo
 
 app = Flask(__name__)
 
@@ -57,15 +58,27 @@ def obtener_datos_ajax():
 
 @app.route("/get_response", methods=["POST"])
 def get_response():
-    global pesoT, alturaT, edadT, generoT,nombreT, correoT
+    #global pesoT, alturaT, edadT, generoT,nombreT, correoT
     data = request.get_json()
     user_message = data["message"]
     prompt = f"You: {user_message}\nAssistant: "
-    print("----------------------------------",pesoT, alturaT, edadT, generoT,nombreT,correoT,"----------------------------------2")
+    #print("----------------------------------",pesoT, alturaT, edadT, generoT,nombreT,correoT,"----------------------------------2")
+    datos = obtener_datos(correoT)
     
-    #   print(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6])
+    print(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],"----------------------------------------------------------------2")
 
-    response = openai.ChatCompletion.create(
+    if "Enviame a mi correo" in user_message:
+        destinatario = datos[0]
+        asunto = "NUTRI AI"
+        mensajes = obtener_textos(datos[0])
+        ultimo_mensaje = mensajes[-1][0] if mensajes else None
+
+        enviar_correo(destinatario, asunto, ultimo_mensaje)
+        
+        return jsonify({"response": "El correo electronico fue enviado correctamente, ¡Le puedo ayudar en algo más?"})
+
+    else:
+        response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         temperature=0.4,
         max_tokens=500,
@@ -75,7 +88,7 @@ def get_response():
         messages = [
     {
         "role": "system",
-        "content": f'Tu eres un experto nutricionista, que guardaras mis datos para dar respuestas precisas a las preguntas. Estos datos son: Mi nombre es: {nombreT}, mi peso: {pesoT}, mi altura: {alturaT}, mi edad: {edadT}, mi género: {generoT}. Además, eres un asistente de nutrición, eres claro y conciso, tienes ganas de ayudar a la gente para que tenga una buena alimentación. Solo responderás consultas que tengan que ver con el área de nutrición. Si te hacen otro tipo de consulta, dirás que solo contestas preguntas relacionadas con la nutrición. Eres gentil y amable. Darás su IMC y explicarás cómo consideras su IMC con los datos proporcionados. Podrías recomendar una dieta si el usuario te lo pide. Siempre especificarás qué tipo de dieta será, qué comerá y en qué cantidad, así como en qué horarios. También podrías recomendar una rutina de ejercicios. Siempre preguntarás al usuario si asiste a un gimnasio o no. Si el usuario no va al gimnasio, recomendarás una rutina de ejercicios para hacer en casa. Para ambos casos de rutina, mencionarás una lista para los días lunes, miércoles y viernes, y explicarás qué tipo de ejercicio hacer de forma detallada, por cuánto tiempo, para cada día.'
+        "content": f'Tu eres un experto nutricionista, que guardaras mis datos para dar respuestas precisas a las preguntas. Estos datos son: Mi correo es: {datos[0]}, mi nombre es: {datos[1]}, mi peso: {datos[4]}, mi altura: {datos[3]}, mi edad: {datos[2]}, mi género: {datos[5]}. Además, eres un asistente de nutrición, eres claro y conciso, tienes ganas de ayudar a la gente para que tenga una buena alimentación. Solo responderás consultas que tengan que ver con el área de nutrición. Si te hacen otro tipo de consulta, dirás que solo contestas preguntas relacionadas con la nutrición. Eres gentil y amable. Darás su IMC y explicarás cómo consideras su IMC con los datos proporcionados. Podrías recomendar una dieta si el usuario te lo pide. Siempre especificarás qué tipo de dieta será, qué comerá y en qué cantidad, así como en qué horarios. También podrías recomendar una rutina de ejercicios. Siempre preguntarás al usuario si asiste a un gimnasio o no. Si el usuario no va al gimnasio, recomendarás una rutina de ejercicios para hacer en casa. Para ambos casos de rutina, mencionarás una lista para los días lunes, miércoles y viernes, y explicarás qué tipo de ejercicio hacer de forma detallada, por cuánto tiempo, para cada día.'
     },
     {
         "role": "user",
@@ -300,8 +313,8 @@ def obtener_textos(correo):
     cursor = conn.cursor()
 
     try:
-        cursor.execute('SELECT * FROM chats WHERE correo = %s', (correo,))
-        datos = cursor.fetchone()
+        cursor.execute('SELECT chats.texto FROM chats WHERE correo = %s', (correo,))
+        datos = cursor.fetchall()
         return datos
 
     except Exception as e:
@@ -310,6 +323,18 @@ def obtener_textos(correo):
     finally:
         cursor.close()
         conn.close()
+
+def enviar(usuario_mensaje, correo, message):
+    if "Enviame a mi correo" in usuario_mensaje:
+        destinatario = correo
+        asunto = "NUTRI AI"
+        mensaje = message
+
+        enviar_correo(destinatario, asunto, mensaje)
+        return "¡Correo enviado!"
+
+    else:
+        return "No se envió el correo."
 
 if __name__ == "__main__":
     app.run(debug=True)
