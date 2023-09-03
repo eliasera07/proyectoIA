@@ -1,12 +1,11 @@
 import openai
-import os
 from flask import Flask, request, jsonify, render_template, redirect, url_for
 import psycopg2
 from correo import enviar_correo
 
 app = Flask(__name__)
 
-openai.api_key = "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"
+openai.api_key = "Llave"
 
 pesoT= 0
 alturaT = 0
@@ -103,13 +102,12 @@ def get_response():
     insertar_texto(correoT,assistant_message)
     return jsonify({"response": assistant_message})
 
-
 def insertar_datos(correo, nombre, peso, altura, edad, genero):
     # Conectarse a la base de datos
     conn = psycopg2.connect(
     database="chatgpt_db",
     user="postgres",
-    password="1010",
+    password="contraseña",
     host="localhost",
     port="5432"
     )
@@ -153,7 +151,7 @@ def insertar_texto(correo, texto_chat):
     conn = psycopg2.connect(
     database="chatgpt_db",
     user="postgres",
-    password="1010",
+    password="contraseña",
     host="localhost",
     port="5432"
     )
@@ -197,7 +195,7 @@ def obtener_datos(correo):
     conn = psycopg2.connect(
     database="chatgpt_db",
     user="postgres",
-    password="1010",
+    password="contraseña",
     host="localhost",
     port="5432"
     )
@@ -239,7 +237,7 @@ def actualizar_datos_bd(correo, nombre, peso, altura, edad, genero):
     conn = psycopg2.connect(
     database="chatgpt_db",
     user="postgres",
-    password="1010",
+    password="contraseña",
     host="localhost",
     port="5432"
     )
@@ -264,7 +262,7 @@ def verificar_correo_existente(correo):
     conn = psycopg2.connect(
         database="chatgpt_db",
         user="postgres",
-        password="1010",
+        password="contraseña",
         host="localhost",
         port="5432"
     )
@@ -288,7 +286,7 @@ def obtener_datos_bd(correo):
     conn = psycopg2.connect(
         database="chatgpt_db",
         user="postgres",
-        password="1010",
+        password="contraseña",
         host="localhost",
         port="5432"
     )
@@ -309,7 +307,7 @@ def obtener_textos(correo):
     conn = psycopg2.connect(
         database="chatgpt_db",
         user="postgres",
-        password="1010",
+        password="contraseña",
         host="localhost",
         port="5432"
     )
